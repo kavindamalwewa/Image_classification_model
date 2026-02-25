@@ -1,0 +1,4 @@
+*.h5
+Dataset/
+venv/
+__pycache__/
