@@ -8,6 +8,12 @@ from sklearn.metrics import classification_report, confusion_matrix
 import seaborn as sns
 
 # =============================
+# DOWNLOADS
+# Dataset : https://drive.google.com/file/d/1aqCxrwoU7-w5CO1k9mYcU2uLFP0TuyUy/view?usp=sharing
+# Model   : https://drive.google.com/file/d/1ovi_R_7v4_eLFCxvnkcxRyGYcXeAbeQl/view?usp=drive_link
+# =============================
+
+# =============================
 # DATASET PATH
 # =============================
 dataset_path = "Dataset"

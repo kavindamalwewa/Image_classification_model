@@ -38,19 +38,22 @@ This project trains a **Convolutional Neural Network (CNN) from scratch** to cla
 ```
 Image_classification_model/
 │
-├── 📂 Dataset/                   # Training data (organized by class folder)
+├── 📂 Dataset/                      # Training data (organized by class folder)
 │   ├── bus/
 │   ├── car/
 │   ├── motorcycle/
 │   └── truck/
 │
-├── 🧠 train.py                   # CNN training script
-├── 🖼️  predict_gui.py             # GUI-based image prediction tool
-├── 📊 training_history.py        # Plot training accuracy & loss graphs
+├── 🧠 train.py                      # Implementation 1 — Custom CNN from scratch
+├── 🧠 implementation_2.py           # Implementation 2 — MobileNetV2 transfer learning
+├── 🖼️  predict_gui.py                # GUI-based image prediction tool (Impl. 1)
+├── 🖼️  implementation_2_predict.py   # GUI-based image prediction tool (Impl. 2)
+├── 📊 training_history.py           # Plot training accuracy & loss graphs
 │
-├── 🏷️  labels.json                # Class label mapping
-├── 📈 training_history.json      # Saved training metrics per epoch
-├── 💾 vehicle_model_cnn.h5       # Trained model file (see download below)
+├── 🏷️  labels.json                   # Class label mapping
+├── 📈 training_history.json         # Saved training metrics per epoch
+├── 💾 vehicle_model_cnn.h5          # Trained model — Impl. 1 (see download below)
+├── 💾 model_v2.h5                   # Trained model — Impl. 2 (see download below)
 │
 └── 📄 README.md
 ```
@@ -58,6 +61,8 @@ Image_classification_model/
 ---
 
 ## 🧠 Model Architecture
+
+### Implementation 1 — Custom CNN (from scratch)
 
 A custom **CNN built from scratch** — no transfer learning.
 
@@ -92,6 +97,36 @@ Input (160×160×3)
 | Epochs | 15 |
 | Batch size | 32 |
 | LR Scheduler | ReduceLROnPlateau (factor=0.3, patience=3) |
+
+---
+
+### Implementation 2 — MobileNetV2 Transfer Learning
+
+Uses **MobileNetV2** pretrained on ImageNet as a frozen feature extractor, with a custom classification head.
+
+```
+MobileNetV2 (frozen, ImageNet weights)
+       │
+  GlobalAveragePooling2D
+       │
+  BatchNormalization
+       │
+  Dense(256, ReLU) → Dropout(0.5)
+       │
+  Dense(4) → Softmax
+```
+
+| Parameter | Value |
+|-----------|-------|
+| Base model | MobileNetV2 (frozen) |
+| Input size | 160 × 160 × 3 |
+| Classifier | Dense(256) |
+| Output | Dense(4) + Softmax |
+| Optimizer | Adam (lr = 0.0003) |
+| Loss | Categorical Crossentropy |
+| Epochs | up to 25 (EarlyStopping) |
+| Batch size | 32 |
+| Callbacks | ReduceLROnPlateau, EarlyStopping, ModelCheckpoint |
 
 ---
 
@@ -140,24 +175,48 @@ Dataset/
 
 ### 🏋️ Train the Model
 
+#### Implementation 1 — Custom CNN
+
 ```bash
 python train.py
 ```
 
 This will:
 - Load and augment training images
-- Train the CNN for 15 epochs
+- Train the custom CNN for 15 epochs
 - Save the trained model as `vehicle_model_cnn.h5`
 - Save training history to `training_history.json`
 - Display a confusion matrix and classification report
+- Plot accuracy & loss curves
+
+#### Implementation 2 — MobileNetV2 Transfer Learning
+
+```bash
+python implementation_2.py
+```
+
+This will:
+- Load and augment training images
+- Fine-tune MobileNetV2 for up to 25 epochs (with early stopping)
+- Save the best checkpoint as `best_vehicle_model.h5` and final model as `model_v2.h5`
+- Save training history to `training_history.json`
+- Display a confusion matrix, classification report, and prediction grid
 - Plot accuracy & loss curves
 
 ---
 
 ### 🖼️ Predict with GUI
 
+#### Implementation 1
+
 ```bash
 python predict_gui.py
+```
+
+#### Implementation 2
+
+```bash
+python implementation_2_predict.py
 ```
 
 A file picker dialog will open — select any vehicle image. The tool will display:
@@ -180,11 +239,30 @@ Generates side-by-side plots of:
 
 ---
 
-## 💾 Model Download
+## 💾 Downloads
 
-The trained model (`vehicle_model_cnn.h5`) is too large to store on GitHub.
+### Dataset
 
-📥 **[Download from Google Drive](https://drive.google.com/your-model-link)**
+The vehicle image dataset is hosted on Google Drive.
+
+📥 **[Download Dataset from Google Drive](https://drive.google.com/file/d/1aqCxrwoU7-w5CO1k9mYcU2uLFP0TuyUy/view?usp=sharing)**
+
+After downloading, extract and organize it as:
+
+```
+Image_classification_model/
+└── Dataset/
+    ├── bus/
+    ├── car/
+    ├── motorcycle/
+    └── truck/
+```
+
+### Trained Model
+
+The trained model file is too large to store on GitHub.
+
+📥 **[Download `vehicle_model_cnn.h5` from Google Drive](https://drive.google.com/file/d/1ovi_R_7v4_eLFCxvnkcxRyGYcXeAbeQl/view?usp=drive_link)**
 
 After downloading, place the file in the root project folder:
 
@@ -199,7 +277,9 @@ Image_classification_model/
 
 | File | Description |
 |------|-------------|
-| `vehicle_model_cnn.h5` | Trained Keras model |
+| `vehicle_model_cnn.h5` | Trained Keras model (Implementation 1) |
+| `model_v2.h5` | Trained Keras model (Implementation 2) |
+| `best_vehicle_model.h5` | Best checkpoint during Impl. 2 training |
 | `training_history.json` | Per-epoch accuracy & loss values |
 | `labels.json` | Class index → label mapping |
 
