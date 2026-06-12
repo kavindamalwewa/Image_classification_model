@@ -245,7 +245,7 @@ Generates side-by-side plots of:
 
 The vehicle image dataset is hosted on Google Drive.
 
-📥 **[Download Dataset from Google Drive](https://drive.google.com/file/d/1j-k2_2s4PUGk2KZhpablGC6ZmwT3x-HU/view?usp=drive_link)**
+📥 **[Download Dataset from Google Drive](https://drive.google.com/file/d/1j-k2_2s4PUGk2KZhpablGC6ZmwT3x-HU/view?usp=sharing)**
 
 After downloading, extract and organize it as:
 
