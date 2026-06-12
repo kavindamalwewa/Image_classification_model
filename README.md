@@ -26,8 +26,8 @@ This project trains a **Convolutional Neural Network (CNN) from scratch** to cla
 
 | Icon | Label | Description |
 |------|-------|-------------|
-| 🚌 | `bus` | Public and Private buses |
-| 🚗 | `car` | Passenger cars and Sedans |
+| 🚌 | `bus` | Public / Private Buses |
+| 🚗 | `car` | Passenger cars / Sedans |
 | 🏍️ | `motorcycle` | Motorcycles and Scooters |
 | 🚚 | `truck` | Trucks and Heavy Vehicles |
 
